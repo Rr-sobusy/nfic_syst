@@ -180,7 +180,7 @@ function Prodstats() {
       return i
     })
 
-    setMacrocomps(newInputFields)
+    setMicrocomps(newInputFields)
   }
 
   function resetStates() {
@@ -442,7 +442,7 @@ function Prodstats() {
                   <div style={{ display: 'flex' }}>
                     <Form.Select
                       onChange={(event) => handleChangeMacro(value.id, event)}
-                      value={value.nameField}
+                      value={value.nameMacro}
                       name="nameMacro"
                       aria-label="Default select example"
                     >
@@ -454,7 +454,7 @@ function Prodstats() {
 
                     <Form.Control
                       onChange={(event) => handleChangeMacro(value.id, event)}
-                      value={value.nameField}
+                      value={value.quantityMacro}
                       name="quantityMacro"
                       className="ms-1"
                       type="number"
@@ -489,7 +489,7 @@ function Prodstats() {
                 <div key={value.id}>
                   <div style={{ display: 'flex' }}>
                     <Form.Select
-                      value={value.nameField}
+                      value={value.nameMicro}
                       onChange={(event) => handleChangeMicro(value.id, event)}
                       name="nameMicro"
                       aria-label="Default select example"
@@ -502,7 +502,7 @@ function Prodstats() {
 
                     <Form.Control
                       onChange={(event) => handleChangeMicro(value.id, event)}
-                      value={value.quantityField}
+                      value={value.quantityMicro}
                       name="quantityMicro"
                       className="ms-1"
                       type="number"
@@ -539,16 +539,7 @@ function Prodstats() {
           >
             Back
           </Button>
-          <Button
-            onClick={() => {
-              macrocomps.map((val) => {
-                console.log(`${val.nameMacro} ++ ${val.quantityMacro}`)
-              })
-            }}
-            variant="primary"
-          >
-            Understood
-          </Button>
+          <Button variant="primary">Submit</Button>
         </Modal.Footer>
       </Modal>
       <div align="right">

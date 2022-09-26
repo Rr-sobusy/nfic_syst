@@ -65,6 +65,7 @@ const Storagebins = React.lazy(() => import('./pages/Storagebins.js'))
 const Packagings = React.lazy(() => import('./pages/Packagings.js'))
 const Repros = React.lazy(() => import('./pages/Repro.js'))
 const Inbounding = React.lazy(() => import('./pages/Inbounding.js'))
+const Consumed = React.lazy(() => import('./pages/Consumed.js'))
 
 const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -153,13 +154,18 @@ const routes = [
   },
   {
     path: '/storagebins+=YWXjVtcPA8YMLNqkFyH0bduVFXL8C6XOdU4CwBBGfEs4yKI9O8e',
-    name: 'Storage bins',
+    name: 'Pending Materials',
     element: Storagebins,
   },
   { path: '/packagings', name: 'Raw-Materials Section / Packagings', element: Packagings },
   { path: '/repros', name: 'Raw-Materials Section / Repros', element: Repros },
-  { path: '/repros', name: 'Raw-Materials Section / Repros', element: Repros },
+
   { path: '/inbounding', name: 'Inbouding', element: Inbounding },
+  {
+    path: '/consumed-+/NitxoxUnBUAR94XYxibYW1TywyEL8S7n0gW92yPbbux9bd9I1OvJN',
+    name: 'Consumed Materials',
+    element: Consumed,
+  },
 ]
 
 export default routes

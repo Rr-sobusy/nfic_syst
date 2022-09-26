@@ -13,6 +13,7 @@ import swal from 'sweetalert'
 
 function Salesstats() {
   const [comp, setComps] = useState([{ id: uuidv4(), nameField: '', quantityField: '' }])
+
   const [show, setShow] = useState(false)
 
   const handleClose = () => setShow(false)
@@ -369,27 +370,6 @@ function Salesstats() {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/*
-      {comp.map((value, index) => {
-        return (
-          <div key={index}>
-            <input type="text"></input>
-            {comp.length - 1 === index && (
-              <button
-                type="button"
-                onClick={() => {
-                  setComps([...comp, { service: '' }])
-                }}
-                className="add-btn"
-              >
-                <span>Add a Service</span>
-              </button>
-            )}
-          </div>
-        )
-      })}
-    */}
     </div>
   )
 }

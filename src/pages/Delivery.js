@@ -28,6 +28,7 @@ function Delivery() {
   const [micros, setMicros] = useState([])
   const [micromodal, setMicromodal] = useState('')
   const [packagings, setPackagings] = useState([])
+  const [refresh, setRefresh] = useState(false)
 
   const handleClose2 = () => setShow2(false)
   const handleShow2 = () => setShow2(true)
@@ -38,7 +39,7 @@ function Delivery() {
     ).then((res) => {
       setDeldata(res.data)
     })
-  }, [])
+  }, [micros, packagings, suppnames, matdata])
 
   useEffect(() => {
     Axios.get(
@@ -47,19 +48,19 @@ function Delivery() {
       setMatdata(res.data)
       console.log(matdata)
     })
-  }, [])
+  }, [refresh])
   useEffect(() => {
     Axios.get(
       'http://192.168.1.100:5006/zj31D2dcD0apzqmc6obb1XtF1pJDD1X2uy4pTpoLYQ9HAHFr0cW6mXbIpOD4PJIk9qcMj50yv65qSr9hga6ZuBoEOkeE6oUvmtGWdNbKqkoNBasnDLu2JuuayLObR4mN',
     ).then((res) => {
       setSuppnames(res.data)
     })
-  }, [])
+  }, [refresh])
   useEffect(() => {
     Axios.get('http://192.168.1.100:5006/searchmicros').then((res) => {
       setMicros(res.data)
     })
-  }, [])
+  }, [refresh])
 
   useEffect(() => {
     let mount = true
@@ -71,7 +72,7 @@ function Delivery() {
     return () => {
       mount = false
     }
-  }, [])
+  }, [refresh])
 
   const column = [
     {
@@ -112,6 +113,9 @@ function Delivery() {
   const microdata = micros.find((newval) => {
     return newval.micro_name === tofilter
   })
+  const packagingdata = packagings.find((newval) => {
+    return newval.packaging_name === tofilter
+  })
   function closeHandler() {
     handleClose()
     handleShow2()
@@ -123,6 +127,10 @@ function Delivery() {
       setRmmodal(microdata.micro_name)
       setPrevquantity(microdata.current_stocks)
     }
+    if (select == 'packaging') {
+      setRmmodal(packagingdata.packaging_name)
+      setPrevquantity(packagingdata.current_stocks)
+    }
   }
   function handleUpdate() {
     if (select == 'macro') {
@@ -131,16 +139,29 @@ function Delivery() {
     if (select == 'micro') {
       updatemicro()
     }
+    if (select == 'packaging') {
+      updatepackaging()
+    }
     insertDelivery()
+  }
+  function updatepackaging() {
+    Axios.post('http://192.168.1.100:5006/updatepackagings', {
+      packagingName: rmmodal,
+      newval: parseFloat(prevquantity, 10) + parseFloat(newquantity, 10),
+    }).then((rex) => {
+      setRefresh(!refresh)
+    })
   }
   function updatemicro() {
     Axios.post(
       'http://192.168.1.100:5006/iUOFilAxLKq2l97lkC0D7vKBrsnjZXsEWAmK6FHVU2KAARsY7LxhPdAMwCikbiklUcJzkEQvSJKmxdnDrlwwquZXxuKmdVglecPx4URaIktwywzGpzkPPactJDERKGjX',
       {
         rmmodal: rmmodal,
-        summicro: parseInt(prevquantity, 10) + parseInt(newquantity, 10),
+        summicro: parseFloat(prevquantity, 10) + parseFloat(newquantity, 10),
       },
-    ).then((rex) => {})
+    ).then((rex) => {
+      setRefresh(!refresh)
+    })
   }
 
   function updatemacro() {
@@ -148,9 +169,11 @@ function Delivery() {
       'http://192.168.1.100:5006/vanmhWQsuTLs7UkHEL9wKJj7UeOORJWB3VJWsrPUtdHUpg9y3NwqgQqu3oKDWtP7HORynoGdK5s1ai1FElKoqzJ9F2VrgrNar3qnpIlebIxjf46hPDe72VdpYIZfWFIT',
       {
         rmmodal: rmmodal,
-        sum: parseInt(prevquantity, 10) + parseInt(newquantity, 10),
+        sum: parseFloat(prevquantity, 10) + parseFloat(newquantity, 10),
       },
-    ).then((rex) => {})
+    ).then((rex) => {
+      setRefresh(!refresh)
+    })
   }
   function insertDelivery() {
     if (
@@ -171,7 +194,9 @@ function Delivery() {
           dr: dr,
           remarks: remarks,
         },
-      ).then((rex) => {})
+      ).then((rex) => {
+        setRefresh(!refresh)
+      })
       swal('Sucess', 'Reception added', 'success')
       handleClose2()
     }

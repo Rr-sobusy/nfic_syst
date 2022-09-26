@@ -74,11 +74,11 @@ app.post(
   (req, res) => {
     const pname = req.body.pname
     const psize = req.body.psize
-    const iquantity = req.body.iquantity
+    const quantity = req.body.iquantity
 
     db.query(
       'INSERT INTO `finished_goods` (`Product_name`,`Packaging_in_kls`,`Quantity`) values (?,?,?)',
-      [pname, psize, iquantity],
+      [pname, psize, quantity],
       (err, result) => {
         if (err) {
         } else {
@@ -182,7 +182,7 @@ app.get(
 //Select Query Micros
 app.get('/searchmicros', (req, res) => {
   const sqlquery =
-    'SELECT ID, micro_name, type, current_stocks, CASE WHEN current_stocks <50 THEN "--CRITICAL--" ELSE " " END annotation from micros ORDER BY `micro_name` ASC'
+    'SELECT ID, micro_name, type, current_stocks,pending, CASE WHEN current_stocks <50 THEN "--CRITICAL--" ELSE " " END annotation from micros ORDER BY `micro_name` ASC'
   db.query(sqlquery, (error, result) => {
     res.send(result)
   })
@@ -524,6 +524,8 @@ app.get('/getpackagings', (req, res) => {
     }
   })
 })
+
+//Insert packaging
 app.post('/insertpackagings', (req, res) => {
   const packagingName = req.body.packagingName
   const currentStocks = req.body.currentStocks
@@ -539,6 +541,20 @@ app.post('/insertpackagings', (req, res) => {
   })
 })
 
+//Update packaging from Delivery
+app.post('/updatepackagings', (req, res) => {
+  const packagingName = req.body.packagingName
+  const newval = req.body.newval
+
+  const sqlquery = 'Update `packagings` SET `current_stocks` = ? where `packaging_name` = ? '
+  db.query(sqlquery, [newval, packagingName], (error, result) => {
+    if (error) {
+      console.log(error)
+    } else {
+      res.send(result)
+    }
+  })
+})
 
 
 

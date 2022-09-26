@@ -21,9 +21,7 @@ function Rawmat() {
   useEffect(() => {
     let mounted = true
     if (mounted) {
-      Axios.get(
-        'http://192.168.1.100:5006/Ubua80poBcH8AeMxqtUIlBYqE2S7n9CX8Thnbd9R70GmpPVZ69nrjvyDA5gJOvsS3c6KULorOqmA7hRJUa2dKNSa4v0XMiYF887Td8FlkSOHrHRLCAFEMxEJCUhjI8HI',
-      ).then((res) => {
+      Axios.get('http://192.168.1.100:8011/api/warehouse/selectMacros').then((res) => {
         setMats(res.data)
         console.log('materials mounted')
       })
@@ -116,13 +114,12 @@ function Rawmat() {
       },
     },
   ]
-  const input = () => {
-    Axios.post(
-      'http://192.168.1.100:5006/KZRKZAbShEgdZSfM6JzxW7gylcHzQyvfoJDMkvMEj6oggJJmg7dAzDWFPaXmWC0zcn7YWBpjZbs6vFMWK8R3OpbqKVkuEuSbPkvwJkDk5ASHj7euv8lrgOfcxbUcpI73',
+  async function input() {
+    await Axios.post(
+      'http://192.168.1.100:8011/api/insertmacroGemWucT5jtVsPfNqzozHjP0FaCMFSfGBnNwrxFGXlYMF07L2xtpf6',
       {
-        rmname: rmname,
-        rmtype: rmtype,
-        rmquantity: rmquantity,
+        macroName: rmname,
+        quantity: rmquantity,
       },
     ).then((rex) => {
       console.log(rex)

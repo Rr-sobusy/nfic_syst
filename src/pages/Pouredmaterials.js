@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 import Axios from 'axios'
 import DataTable from 'react-data-table-component'
 import swal from 'sweetalert'
+import { setRef } from '@mui/material'
 
 function Pouredmaterials() {
   const [show, setShow] = useState(false)
@@ -24,6 +25,7 @@ function Pouredmaterials() {
   const [poured, setPoured] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [micros, setMicros] = useState([])
+  const [packaging, setPackaging] = useState([])
 
   useEffect(() => {
     async function get() {
@@ -42,6 +44,7 @@ function Pouredmaterials() {
     }
     get()
   }, [refresh])
+
   React.useEffect(() => {
     let subscribe = true
     Axios.get('http://192.168.1.100:5006/searchmicros').then((response) => {
@@ -55,22 +58,21 @@ function Pouredmaterials() {
       subscribe = false
     }
   }, [refresh])
-  useEffect(() => {
-    async function get() {
-      let subscribe = true
-      await Axios.get('http://192.168.1.100:5006/pouring').then((res) => {
-        if (subscribe) {
-          setPoured(res.data)
-          console.log('Pouring report updated')
-        }
-      })
 
-      return () => {
-        subscribe = false
+  useEffect(() => {
+    let subscribe = true
+    Axios.get('http://192.168.1.100:5006/pouring').then((res) => {
+      if (subscribe) {
+        setPoured(res.data)
+        console.log('Pouring report updated')
       }
+    })
+
+    return () => {
+      subscribe = false
     }
-    get()
-  }, [mats])
+  }, [mats, micros, repro])
+
   useEffect(() => {
     let subscribe = true
     Axios.get(
@@ -84,11 +86,29 @@ function Pouredmaterials() {
       subscribe = false
     }
   }, [refresh])
+
+  useEffect(() => {
+    let subscribe = true
+    Axios.get('http://192.168.1.100:8011/api/warehouse/getpackaging').then((res) => {
+      if (subscribe) {
+        setPackaging(res.data)
+      }
+    })
+    return () => {
+      subscribe = false
+    }
+  }, [refresh])
   const filteredmacro = mats.find((newval) => {
     return newval.rawmat_name === type2
   })
   const filteredmicro = micros.find((newval) => {
     return newval.micro_name === type2
+  })
+  const filteredrepro = repro.find((newval) => {
+    return newval.Product_name === type2
+  })
+  const filteredpackaging = packaging.find((newval) => {
+    return newval.packaging_name === type2
   })
 
   const Navigate = useNavigate()
@@ -113,6 +133,7 @@ function Pouredmaterials() {
     setType2('')
     setDatas({ date: '', quantity: 0 })
   }
+  //function in inserting and updating the table
   function addPoured() {
     Axios.post('http://192.168.1.100:5006/insertpouring', {
       date: datas.date,
@@ -122,6 +143,30 @@ function Pouredmaterials() {
       setRefresh(!refresh)
     })
   }
+  //function in add Pending Macro by releasing Macro from warehouse
+  async function addPendingMacro() {
+    await Axios.post(
+      'http://192.168.1.100:8011/api/addpendingmacroaEe3eC2ux71OuUnMNuCxwMExURmAOtWIufmV1r2HI48yRzRJk',
+      {
+        macroName: type2,
+        quantity: parseInt(filteredmacro.bin_content, 10) + parseInt(datas.quantity, 10),
+      },
+    ).then((res) => {
+      setRefresh(!refresh)
+    })
+  }
+
+  async function addPendingRepro() {
+    await Axios.post(
+      'http://192.168.1.100:8011/api/addpendingreproAhnNrt2ohV1lHyXRahxsQFAzmmz2jGT7tl3nIlSmwgKsaYF1S',
+      {
+        productName: type2,
+        quantity: parseFloat(filteredrepro.bin_content, 10) + parseFloat(datas.quantity, 10),
+      },
+    )
+  }
+
+  //function that update the Macro,Micro,Packaging,Repro in Repros after Released
   async function update() {
     if (type === 'micro') {
       if (datas.date.length === 0 || datas.quantity.length === 0) {
@@ -129,13 +174,24 @@ function Pouredmaterials() {
       } else {
         const difference =
           parseFloat(filteredmicro.current_stocks, 10) - parseFloat(datas.quantity, 10)
-
-        await Axios.post('http://192.168.1.100:5006/updatemicropouring', {
-          microname: type2,
-          difference: difference,
-        }).then((rex) => {
-          setRefresh(!refresh)
-          console.log(difference)
+        await Axios.post(
+          'http://192.168.1.100:8011/api/subtractmicrox0RUyYYgH4ReJaNCyCyz9Ie5p2sTvT45Ho1hMV5ML0A2lLeJ58J',
+          {
+            microName: type2,
+            difference: difference,
+          },
+        ).then(async (rex) => {
+          //Function in adding pending materials after releasing from warehouse
+          const difference = parseFloat(filteredmicro.pending, 10) + parseFloat(datas.quantity, 10)
+          await Axios.post(
+            'http://192.168.1.100:8011/api/addpendingmicrofP5uesr2FS7OEATkqbsmajDQjWBewQTrlWcjP4Mi3nqfDyeY3',
+            {
+              microName: type2,
+              quantitymicro: difference,
+            },
+          ).then((res) => {
+            setRefresh(!refresh)
+          })
         })
         addPoured()
         handleClose2()
@@ -151,7 +207,63 @@ function Pouredmaterials() {
         await Axios.post('http://192.168.1.100:5006/updatemacropouring', {
           macroname: type2,
           difference: difference,
-        }).then((rex) => {
+        }).then(async (rex) => {
+          //Function that add pending Macros after release from warehouse
+          await Axios.post(
+            'http://192.168.1.100:8011/api/addpendingmacroaEe3eC2ux71OuUnMNuCxwMExURmAOtWIufmV1r2HI48yRzRJk',
+            {
+              macroName: type2,
+              quantity: parseInt(filteredmacro.bin_content, 10) + parseInt(datas.quantity, 10),
+            },
+          ).then((res) => {
+            setRefresh(!refresh)
+          })
+        })
+        addPoured()
+        handleClose2()
+        resetStates()
+      }
+    }
+    if (type === 'repro') {
+      if (datas.date.length === 0 || datas.quantity.length === 0) {
+        swal('Error!', 'Validate Fields!', 'error')
+      } else {
+        const difference = parseInt(filteredrepro.repros, 10) - parseInt(datas.quantity, 10)
+        await Axios.post(
+          'http://192.168.1.100:8011/api/updaterepro7xKKroOjuSJrQpay8JHEHgEAFGvenEZh5EH6OsksfRVgxVS6BD3Hf',
+          {
+            productName: type2,
+            difference: difference,
+          },
+        ).then(async () => {
+          await Axios.post(
+            'http://192.168.1.100:8011/api/addrepropendingh3JuRHomzUrF4MQ1oWUkXBGGxK0JwmC4QZCkBxEq98qGOetiQ',
+            {
+              reproName: type2,
+              quantity: parseInt(filteredrepro.bin_content, 10) + parseInt(datas.quantity, 10),
+            },
+          ).then(() => {
+            setRefresh(!refresh)
+          })
+        })
+        addPoured()
+        handleClose2()
+        resetStates()
+      }
+    }
+    if (type === 'packaging') {
+      if (datas.date.length === 0 || datas.quantity.length === 0) {
+        swal('Error!', 'Validate Fields!', 'error')
+      } else {
+        const newquantity =
+          parseInt(filteredpackaging.current_stocks, 10) - parseInt(datas.quantity, 10)
+        await Axios.post(
+          'http://192.168.1.100:8011/api/subtractpackagingweaAI0yvEnn7rCLTIfqLRICqgfjNRd0D6vmquTbxsC9JN06',
+          {
+            packagingName: type2,
+            quantity: newquantity,
+          },
+        ).then(() => {
           setRefresh(!refresh)
         })
         addPoured()
@@ -174,6 +286,8 @@ function Pouredmaterials() {
       selector: (row) => row.quantity,
     },
   ]
+
+  function handleExport() {}
   return (
     <div>
       <div align="right">
@@ -227,6 +341,14 @@ function Pouredmaterials() {
                     </option>
                   )
                 })}
+              {type === 'packaging' &&
+                packaging.map((val, index) => {
+                  return (
+                    <option key={index} val={val.packaging_name}>
+                      {val.packaging_name}
+                    </option>
+                  )
+                })}
             </Form.Select>
           </Modal.Body>
           <Modal.Footer>
@@ -255,6 +377,7 @@ function Pouredmaterials() {
               Release Material : {type2}
               {filteredmacro && <h6>Current WH Stocks: {filteredmacro.current_stocks}</h6>}
               {filteredmicro && <h6>Current WH Stocks: {filteredmicro.current_stocks}</h6>}
+              {filteredrepro && <h6>Current WH Stocks: {filteredrepro.repros}</h6>}
               <br></br>
             </Modal.Title>
           </Modal.Header>

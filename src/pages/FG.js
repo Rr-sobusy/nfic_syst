@@ -20,27 +20,44 @@ function FG() {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/kqeA9XnmTgU1CUMnONapgDfHxpI51VBBy3USKsXrLO42UbwfKJMXRvxz6WeyQQ21tcBtywicaKXucH0jyVlNj236orKjp9Guu6yNfgGgUftG4i2dv4piPDKSMaiU1lLY',
-    ).then((res) => {
-      setProducts(res.data)
-    })
+    async function getFgs() {
+      await Axios.get('http://192.168.1.100:8011/api/warehouse/selectfg').then((res) => {
+        setProducts(res.data)
+      })
+    }
+    getFgs()
   }, [clicked])
 
-  const handleInput = () => {
-    Axios.post(
-      'http://192.168.1.100:5006/M2ioH1bN7l5rSvpzesC6a6QeYUEgG0VYYHsaEYplll2kUFRthoFHSEZCDLUMfBHoK5olXyXRmIi64bmWAQcg1LEsU6TnDFEjXRjgKFiiVxMRC8rntOfTABui6Z68AOcU',
-      {
-        pname: pname,
-        psize: psize,
-        iquantity: iquantity,
-      },
-    ).then((rex) => {
-      console.log(rex)
+  const handleInput = async () => {
+    await Axios.post('http://192.168.1.100:8011/api/insertfg', {
+      pname: pname,
+      psize: psize,
+      quantity: iquantity,
+    }).then((res) => {
+      handleClose()
       setClicked(!clicked)
     })
-    handleClose()
-    swal('', 'Product Added!', 'success')
+
+    /*
+    await fetch('http://192.168.1.100:8011/api/insertfg', {
+      method: 'POST',
+
+
+ pname: pname,
+      psize: psize,
+      quantity: iquantity,
+
+
+
+
+      body: `{
+        "pname": "rex",
+         "psize":"0",
+         "quantity":"0"
+        }`,
+    }).then((res) => {
+      console.log(res)
+    })*/
   }
 
   const column = [
@@ -89,9 +106,12 @@ function FG() {
                       content: 'input',
                     }).then((value) => {
                       if (value == 'rex') {
-                        Axios.post('http://192.168.1.100:5006/deletefg', {
-                          productName: row.Product_name,
-                        }).then((res) => {
+                        Axios.post(
+                          'http://192.168.1.100:8011/api/deletefgEO23wMCs7ZR2MjXFkYZYUnXLLm8bNTXT6LTeAcwunZHG8HYQV1QXpwDr',
+                          {
+                            pname: row.Product_name,
+                          },
+                        ).then((res) => {
                           console.log(res)
                           setClicked(!clicked)
                         })
@@ -143,14 +163,7 @@ function FG() {
       order: 'desc',
     },
   ]
-  function post() {
-    Axios.post('http://192.168.1.100:5006/test', {
-      id: 1,
-    }).then((rex) => {
-      console.log(rex)
-    })
-    handleClose()
-  }
+
   return (
     <div className="container-sm table-responsive" align="right">
       <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
@@ -205,7 +218,6 @@ function FG() {
       <button className="btn btn-primary mb-4" onClick={handleShow}>
         Add New Product
       </button>
-
       <div className="table">
         <DataTable
           customStyles={customStyles}

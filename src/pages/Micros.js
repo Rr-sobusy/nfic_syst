@@ -33,7 +33,7 @@ function Micros() {
   const [refresh, setRefresh] = useState(false)
   React.useEffect(() => {
     let subscribe = true
-    Axios.get('http://192.168.1.100:5006/searchmicros').then((response) => {
+    Axios.get('http://192.168.1.100:8011/api/warehouse/selectMicros').then((response) => {
       if (subscribe) {
         setMicros(response.data)
         console.log('updated')
@@ -172,18 +172,20 @@ function Micros() {
     },
   ]
 
-  function post(e) {
-    Axios.post('http://192.168.1.100:5006/insertmicro', {
-      microname: microname,
-      quantity: quantity,
-    }).then((rex) => {
+  async function post(e) {
+    await Axios.post(
+      'http://192.168.1.100:8011/api/insertnewmicrouIYLT0Hiskg1XtkzxKXSGjkGMrVoQSEv2sMisG8rgvcKDPIvlH',
+      {
+        microName: microname,
+        quantity: quantity,
+      },
+    ).then((rex) => {
       setRefresh(!refresh)
     })
   }
   function SubmitHandler(event) {
     post()
     handleClose()
-    setRefresh(!refresh)
     swal('', 'Micro Added!', 'success')
   }
 

@@ -96,13 +96,13 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Storage Bins',
+        name: 'Pending Materials',
         to: '/storagebins+=YWXjVtcPA8YMLNqkFyH0bduVFXL8C6XOdU4CwBBGfEs4yKI9O8e',
       },
       {
         component: CNavItem,
         name: 'Consumed Materials',
-        to: '/rex',
+        to: '/consumed-+/NitxoxUnBUAR94XYxibYW1TywyEL8S7n0gW92yPbbux9bd9I1OvJN',
       },
     ],
   },
