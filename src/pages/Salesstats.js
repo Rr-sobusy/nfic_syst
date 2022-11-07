@@ -38,12 +38,14 @@ function Salesstats() {
   })
   const [custnames, setCustnames] = useState([])
   const [sample, setSample] = useState({ date: '', custName: '', inv_no: '', order_details: '' })
+
+  const sample1 = React.useContext(Context)
+  const API = sample1.API_URi
+
   useEffect(() => {
     let mount = true
     if (mount) {
-      Axios.get(
-        'http://192.168.1.100:5006/kqeA9XnmTgU1CUMnONapgDfHxpI51VBBy3USKsXrLO42UbwfKJMXRvxz6WeyQQ21tcBtywicaKXucH0jyVlNj236orKjp9Guu6yNfgGgUftG4i2dv4piPDKSMaiU1lLY',
-      ).then((res) => {
+      Axios.get(`${API}/api/warehouse/selectfg`).then((res) => {
         setFgs(res.data)
       })
     }
@@ -54,7 +56,7 @@ function Salesstats() {
   useEffect(() => {
     let mount = true
     if (mount) {
-      Axios.get('http://192.168.1.100:5006/salestats').then((res) => {
+      Axios.get(`${API}/api/salesdata`).then((res) => {
         setSalesdata(res.data)
       })
     }
@@ -65,7 +67,7 @@ function Salesstats() {
   useEffect(() => {
     let mount = true
     if (mount) {
-      Axios.get('http://192.168.1.100:5006/custnames').then((res) => {
+      Axios.get(`${API}/api/customernames`).then((res) => {
         setCustnames(res.data)
       })
     }
@@ -236,21 +238,27 @@ function Salesstats() {
                   })
                   const newvalue =
                     parseInt(filtered.Quantity, 10) - parseInt(value.quantityField, 10)
-                  Axios.post('http://192.168.1.100:5006/updatefgsales', {
-                    fgname: value.nameField,
-                    difference: newvalue,
-                  }).then((res) => {
+                  Axios.post(
+                    `${API}/api/updatefg3GRaAoVsbKpFu7fpUabkS1ygipWThEKsTSoC0VFtc66J333bzf6nb6Rw`,
+                    {
+                      fgname: value.nameField,
+                      quantity: newvalue,
+                    },
+                  ).then((res) => {
                     setRefresh(!refresh)
                   })
                 })
-                Axios.post('http://192.168.1.100:5006/postsales', {
-                  date: initialdata.date,
-                  custName: initialdata.custName,
-                  si_no: initialdata.si_no,
-                  data: comp.map((val) => {
-                    return `Item: ${val.nameField} Quantity: ${val.quantityField} ||`
-                  }),
-                }).then((res) => {
+                Axios.post(
+                  `${API}/api/postsalesFW7IvMZbVrvsDsB7g0B2lR31xKQwFfJEOk0A5F4VvBHtUDXcf0EFMqn`,
+                  {
+                    date: initialdata.date,
+                    custName: initialdata.custName,
+                    si_no: initialdata.si_no,
+                    data: comp.map((val) => {
+                      return `Item: ${val.nameField} Quantity: ${val.quantityField} ||`
+                    }),
+                  },
+                ).then((res) => {
                   console.log(res)
                   setRefresh((prevState) => !prevState)
                 })

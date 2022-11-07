@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import Axios from 'axios'
+import { Context } from 'src/App'
 
 function Manage_cust() {
   const [show, setShow] = useState(false)

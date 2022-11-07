@@ -24,7 +24,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Dashboard',
-    to: '/dashboard/-ykkWxlgjPKyO1BTgZnJCmORSvoI7kjXAjkCTUcyke8DMo5AdIoX84',
+    to: '/dashboardzQJxXquQoempsWszESEZPwoYWlJpk5jPBlY3v6uE1UZJVhbjUHOD3FC',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
@@ -46,12 +46,12 @@ const _nav = [
           {
             component: CNavItem,
             name: 'Macros',
-            to: '/macros/-yCSX09AFLXqMbKb220R3V8mXnOpamF0TTQHi7ICBWRJxiHdQTzqMiI4T',
+            to: '/macros1HhcQogFU9k5Obc8CqqDftt41X2MxXbodIOGgQ9PFrQwCnaoPBq0gdnJBh',
           },
           {
             component: CNavItem,
             name: 'Micros',
-            to: 'micros//-zCGGLbISDsmZttsQraX5YWhNxwUkhJTC5St7AUsatdvTaorj62XEjy5',
+            to: '/microsMtdlecpoZMVR4T21rVdvOP6kupHzFSBySGEhLAY0gqTZr7h6Qez6YbBgVZ',
           },
           {
             component: CNavItem,
@@ -69,7 +69,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Delivery Receptions',
-        to: '/matdelivery/-7fhOgW6r2u0AAN6zYXPwNCGIIrzT5UqdM0sjfYCPNV7MTUrUmD7',
+        to: '/matdeliveryPkV2koC32AgvZtv5owj0ibUQlmIsruYFnTJN8QOFGv5TGYxlNYBXT',
       },
       {
         component: CNavItem,
@@ -87,7 +87,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Production Reports',
-        to: '/prodreports/-K7sXW6FzLkUOsW0KTKXUdsxIRzkdbtFVjSwAq679aZxdUzrlmrO',
+        to: '/prodreportsQRBpMUBXgugyW7qjiCslPWWzNUGkaB8AkxrtMx7BuFj8PtCgITM1I',
       },
       {
         component: CNavItem,
@@ -102,7 +102,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Consumed Materials',
-        to: '/consumed-+/NitxoxUnBUAR94XYxibYW1TywyEL8S7n0gW92yPbbux9bd9I1OvJN',
+        to: '/consumedmaterialsAfyIQtSTKNl5pv3HByGumIfmcby1CSlrwGGmOsyZw6WRcLf',
       },
     ],
   },

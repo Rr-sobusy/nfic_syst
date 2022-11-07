@@ -6,25 +6,26 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Axios from 'axios'
 import swal from 'sweetalert'
+import { Context } from 'src/App'
 
 function Storagebins() {
   const [repros, setRepros] = useState([])
   const [macros, setMacros] = useState([])
   const [micros, setMicros] = useState([])
   const [refresh, setRefresh] = useState(false)
+
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/kqeA9XnmTgU1CUMnONapgDfHxpI51VBBy3USKsXrLO42UbwfKJMXRvxz6WeyQQ21tcBtywicaKXucH0jyVlNj236orKjp9Guu6yNfgGgUftG4i2dv4piPDKSMaiU1lLY',
-    ).then((res) => {
+    Axios.get(`${API}/api/warehouse/selectfg`).then((res) => {
       setRepros(res.data)
     })
   }, [refresh])
   useEffect(() => {
     let mounted = true
     if (mounted) {
-      Axios.get(
-        'http://192.168.1.100:5006/Ubua80poBcH8AeMxqtUIlBYqE2S7n9CX8Thnbd9R70GmpPVZ69nrjvyDA5gJOvsS3c6KULorOqmA7hRJUa2dKNSa4v0XMiYF887Td8FlkSOHrHRLCAFEMxEJCUhjI8HI',
-      ).then((res) => {
+      Axios.get(`${API}/api/warehouse/selectMacros`).then((res) => {
         setMacros(res.data)
         console.log('materials mounted')
       })
@@ -36,7 +37,7 @@ function Storagebins() {
   useEffect(() => {
     let mounted = true
     if (mounted) {
-      Axios.get('http://192.168.1.100:8011/api/warehouse/selectMicros').then((res) => {
+      Axios.get(`${API}/api/warehouse/selectMicros`).then((res) => {
         setMicros(res.data)
         console.log('materials mounted')
       })
@@ -71,7 +72,7 @@ function Storagebins() {
                 }).then((value) => {
                   if (value === 'nfic2022') {
                     Axios.post(
-                      'http://192.168.1.100:8011/api/resetpendingmacroRelG92zIWNVnyyB6peouqXHBdFCbUswKbWHOlxVYYBkUAat',
+                      `${API}/api/resetpendingmacroRelG92zIWNVnyyB6peouqXHBdFCbUswKbWHOlxVYYBkUAat`,
                       {
                         macroName: row.rawmat_name,
                       },
@@ -115,7 +116,7 @@ function Storagebins() {
                 }).then((value) => {
                   if (value === 'nfic2022') {
                     Axios.post(
-                      'http://192.168.1.100:8011/api/resetrepropendingpTjOTj41bIhcDXkAwlifWnfP7W7HlSD6l55Vru4WwfxVLK6',
+                      `${API}/api/resetrepropendingpTjOTj41bIhcDXkAwlifWnfP7W7HlSD6l55Vru4WwfxVLK6`,
                       {
                         reproName: row.Product_name,
                       },
@@ -162,7 +163,7 @@ function Storagebins() {
                 }).then((value) => {
                   if (value === 'nfic2022') {
                     Axios.post(
-                      'http://192.168.1.100:8011/api/resetpendingmicroAGDhhGmEzxFhSAsgmQw7xlXS3xYAFFPDe9nky7oAr7eq26O',
+                      `${API}/api/resetpendingmicroAGDhhGmEzxFhSAsgmQw7xlXS3xYAFFPDe9nky7oAr7eq26O`,
                       {
                         microName: row.micro_name,
                       },

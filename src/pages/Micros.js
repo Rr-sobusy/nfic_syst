@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import swal from 'sweetalert'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import { Context } from 'src/App'
 
 function Micros() {
   const [show, setShow] = useState(false)
@@ -31,9 +32,13 @@ function Micros() {
     annotation: '',
   })
   const [refresh, setRefresh] = useState(false)
+
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   React.useEffect(() => {
     let subscribe = true
-    Axios.get('http://192.168.1.100:8011/api/warehouse/selectMicros').then((response) => {
+    Axios.get(`${API}/api/warehouse/selectMicros`).then((response) => {
       if (subscribe) {
         setMicros(response.data)
         console.log('updated')
@@ -96,7 +101,7 @@ function Micros() {
             <button
               onClick={() => {
                 setModaldata({
-                  name: row.micro_name,
+                  microname: row.micro_name,
                   type: 'rex',
                   type: 'rex',
                   quantity: 0,
@@ -195,20 +200,31 @@ function Micros() {
 
   return (
     <div className="container">
-      {
-        <Modal show={show1} onHide={handleClose1} backdrop="static" keyboard={false}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal title{modaldata.name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body></Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary">Understood</Button>
-          </Modal.Footer>
-        </Modal>
-      }
+      <Modal show={show1} onHide={handleClose1} backdrop="static" keyboard={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal title{modaldata.microname}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="chat-notification">
+            <div className="chat-notification-logo-wrapper">
+              <img className="chat-notification-logo" src="/img/logo.svg" alt="ChitChat Logo" />
+            </div>
+            <div className="chat-notification-content">
+              <h4 className="chat-notification-title">ChitChat</h4>
+              <p className="chat-notification-message">You have a new message!</p>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose1}>
+            Close
+          </Button>
+          <Button variant="primary">Understood</Button>
+          <button className="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+            Message
+          </button>
+        </Modal.Footer>
+      </Modal>
 
       <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
         <Modal.Header closeButton>

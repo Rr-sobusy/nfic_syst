@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form'
 import swal from 'sweetalert'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import { Context } from 'src/App'
 
 function Packagings() {
   const [packagings, setPackagings] = useState([])
@@ -17,10 +18,13 @@ function Packagings() {
   const [datas, setDatas] = useState({ packagingName: '', currentStocks: 0 })
   const [refresh, setRefresh] = useState(false)
 
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
     let mount = true
     if (mount) {
-      Axios.get('http://192.168.1.100:5006/getpackagings').then((res) => {
+      Axios.get(`${API}/api/warehouse/getpackaging`).then((res) => {
         setPackagings(res.data)
       })
     }

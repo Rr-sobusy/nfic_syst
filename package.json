@@ -1,7 +1,7 @@
 {
   "name": "NutriScience Data Management System",
   "version": "4.4.0",
-  "description": "@Nutriscience",
+  "description": "Nutriscience",
   "homepage": ".",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
@@ -40,6 +40,7 @@
     "@mui/material": "^5.10.1",
     "@mui/styles": "^5.9.3",
     "@popperjs/core": "^2.11.6",
+    "antd": "^4.24.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "chart.js": "^3.8.0",
@@ -79,9 +80,13 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.2.1",
     "auto-changelog": "~2.4.0",
+    "autoprefixer": "^10.4.13",
     "eslint-config-prettier": "^8.5.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "postcss": "^8.4.18",
     "react-scripts": "5.0.1",
     "sass": "^1.53.0",
+    "tailwindcss": "^3.2.1",
     "web-vitals": "^2.1.4"
   },
   "engines": {

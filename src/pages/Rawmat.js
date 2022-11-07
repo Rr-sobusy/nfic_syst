@@ -6,6 +6,7 @@ import { Modal } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { Form } from 'react-bootstrap'
 import swal from 'sweetalert'
+import { Context } from 'src/App'
 
 function Rawmat() {
   const [show, setShow] = useState(false)
@@ -18,10 +19,14 @@ function Rawmat() {
   const [rmquantity, setRmquantity] = useState(0)
   const [filtertext, setTofiltertext] = useState('')
   const [refresh, setRefresh] = useState(false)
+
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
     let mounted = true
     if (mounted) {
-      Axios.get('http://192.168.1.100:8011/api/warehouse/selectMacros').then((res) => {
+      Axios.get(`${API}/api/warehouse/selectMacros`).then((res) => {
         setMats(res.data)
         console.log('materials mounted')
       })
@@ -84,9 +89,12 @@ function Rawmat() {
                       },
                     }).then((rex) => {
                       if (rex == 'rex') {
-                        Axios.post('http://192.168.1.100:5006/deletemacro', {
-                          macroname: row.rawmat_name,
-                        }).then((rex) => {
+                        Axios.post(
+                          `${API}/api/deletemacroSVokyXltTDoR2RO3zOIwC8dLAqLcDhOLWC8CSNyWjRVZNy6rYXPQo`,
+                          {
+                            macroName: row.rawmat_name,
+                          },
+                        ).then((rex) => {
                           setRefresh(!refresh)
                         })
                         swal.close()
@@ -116,7 +124,7 @@ function Rawmat() {
   ]
   async function input() {
     await Axios.post(
-      'http://192.168.1.100:8011/api/insertmacroGemWucT5jtVsPfNqzozHjP0FaCMFSfGBnNwrxFGXlYMF07L2xtpf6',
+      `${API}/api/insertmacroGemWucT5jtVsPfNqzozHjP0FaCMFSfGBnNwrxFGXlYMF07L2xtpf6`,
       {
         macroName: rmname,
         quantity: rmquantity,

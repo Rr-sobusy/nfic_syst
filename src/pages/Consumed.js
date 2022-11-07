@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form'
 import { v4 as uuidv4 } from 'uuid'
 import Axios from 'axios'
 import DataTable from 'react-data-table-component'
-import { setRef } from '@mui/material'
+import { Context } from 'src/App'
 
 function Consumed() {
   const [type, setType] = useState('')
@@ -37,19 +37,22 @@ function Consumed() {
   const handleClose3 = () => setShow3(false)
   const handleShow3 = () => setShow3(true)
 
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
-    Axios.get('http://192.168.1.100:8011/api/warehouse/selectMicros').then((res) => {
+    Axios.get(`${API}/api/warehouse/selectMicros`).then((res) => {
       setMicros(res.data)
     })
   }, [])
 
   useEffect(() => {
-    Axios.get('http://192.168.1.100:8011/api/warehouse/selectMacros').then((res) => {
+    Axios.get(`${API}/api/warehouse/selectMacros`).then((res) => {
       setMacros(res.data)
     })
   }, [])
   useEffect(() => {
-    Axios.get('http://192.168.1.100:8011/api/getConsumed').then((res) => {
+    Axios.get(`${API}/api/getConsumed`).then((res) => {
       setConsumed(res.data)
     })
   }, [refresh])
@@ -94,20 +97,7 @@ function Consumed() {
   }
 
   function postHistoryMicro() {
-    Axios.post('http://192.168.1.100:8011/api/testingrex', {
-      description: description,
-      total: sum,
-      type: type,
-      date: date,
-      items: comp.map((val) => {
-        return `Material: ${val.nameField} Quantity: ${val.quantityField} ||`
-      }),
-    }).then(() => {
-      setRefresh(!refresh)
-    })
-  }
-  function postHistoryMicro() {
-    Axios.post('http://192.168.1.100:8011/api/testingrex', {
+    Axios.post(`${API}/api/addconsumedUmA9v5qCpwHVMB0BeVa5oVPTrHKgZmRdpco7jS5o5goCoKTqyNS9B`, {
       description: description,
       total: sum,
       type: type,
@@ -121,7 +111,7 @@ function Consumed() {
   }
 
   function postHistoryMacro() {
-    Axios.post('http://192.168.1.100:8011/api/testingrex', {
+    Axios.post(`${API}/api/addconsumedUmA9v5qCpwHVMB0BeVa5oVPTrHKgZmRdpco7jS5o5goCoKTqyNS9B`, {
       description: description,
       total: sum,
       type: type,
@@ -144,13 +134,10 @@ function Consumed() {
           return newval.micro_name === val.nameField
         })
         const diff = parseFloat(filtered.pending, 10) - parseFloat(val.quantityField, 10)
-        Axios.post(
-          'http://192.168.1.100:8011/api/updatependingmicronRWSqmERLjHOuFxqoinfr5W51xxu9eWx02nVdXoiYvB9wB',
-          {
-            difference: diff,
-            microName: val.nameField,
-          },
-        ).then(() => {
+        Axios.post(`${API}/api/updatependingmicronRWSqmERLjHOuFxqoinfr5W51xxu9eWx02nVdXoiYvB9wB`, {
+          difference: diff,
+          microName: val.nameField,
+        }).then(() => {
           setRefresh(!refresh)
         })
       })
@@ -164,13 +151,10 @@ function Consumed() {
           return newval.rawmat_name === val.nameMacro
         })
         const diff = parseFloat(filtered.bin_content, 10) - parseFloat(val.quantityMacro, 10)
-        Axios.post(
-          'http://192.168.1.100:8011/api/updatependingmacroFe29bmBW6iAxwWCPAMuBNi2mqQ2nmEUIhgyN6aZdWR8iH1',
-          {
-            macroName: val.nameMacro,
-            difference: diff,
-          },
-        ).then(() => {
+        Axios.post(`${API}/api/updatependingmacroFe29bmBW6iAxwWCPAMuBNi2mqQ2nmEUIhgyN6aZdWR8iH1`, {
+          macroName: val.nameMacro,
+          difference: diff,
+        }).then(() => {
           setRefresh(!refresh)
         })
       })

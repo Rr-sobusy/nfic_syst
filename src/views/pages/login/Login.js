@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import swal from 'sweetalert'
 import Axios from 'axios'
+import { Context } from 'src/App'
 
 import {
   CButton,
@@ -28,6 +29,9 @@ const Login = () => {
   const [uname, setUname] = useState('')
   const [pword, setPword] = useState('')
 
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {})
   function unameHandler(e) {
     setUname(e.target.value)
@@ -36,27 +40,17 @@ const Login = () => {
     setPword(e.target.value)
   }
   function clickHandler() {
-    Axios.post('http://192.168.1.100:5006/selectusers', {
-      username: uname,
-      password: pword,
+    Axios.post(`${API}/api/authenticateuser`, {
+      userName: uname,
+      passWord: pword,
     }).then((result) => {
-      if (result.data == 'Login Failed') {
-        swal('Unauthorized User!', 'Contact admin for authorization', 'error')
-      } else {
+      if (result.data == 'User found') {
         sessionStorage.setItem('user', 'tst')
-        Navigate('/dashboard/-ykkWxlgjPKyO1BTgZnJCmORSvoI7kjXAjkCTUcyke8DMo5AdIoX84')
+        Navigate('/dashboardzQJxXquQoempsWszESEZPwoYWlJpk5jPBlY3v6uE1UZJVhbjUHOD3FC')
+      } else {
+        swal('Unauthorized User!', 'Contact admin for authorization', 'error')
       }
     })
-    {
-      /*
-    if (uname == 'rex' && pword == 'randy') {
-      sessionStorage.setItem('user', 'tst')
-      Navigate('/dashboard/-ykkWxlgjPKyO1BTgZnJCmORSvoI7kjXAjkCTUcyke8DMo5AdIoX84')
-    } else {
-      swal('Unauthorized User!', 'Contact admin for authorization', 'error')
-    }
-  */
-    }
   }
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -106,9 +100,6 @@ const Login = () => {
       </CContainer>
     </div>
   )
-}
-Login.propTypes = {
-  newauth: propTypes.bool,
 }
 
 export default Login

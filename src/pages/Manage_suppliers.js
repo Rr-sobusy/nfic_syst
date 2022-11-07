@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
+import { Context } from 'src/App'
 
 function Manage_suppliers() {
   const [suppnames, setSuppnames] = useState([])
@@ -12,10 +13,12 @@ function Manage_suppliers() {
   const handleShow = () => setShow(true)
   const [suppliers, setSuppliers] = useState('')
   const [refresh, setRefresh] = useState(false)
+
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/zj31D2dcD0apzqmc6obb1XtF1pJDD1X2uy4pTpoLYQ9HAHFr0cW6mXbIpOD4PJIk9qcMj50yv65qSr9hga6ZuBoEOkeE6oUvmtGWdNbKqkoNBasnDLu2JuuayLObR4mN',
-    ).then((res) => {
+    Axios.get(`${API}/api/suppliernames`).then((res) => {
       setSuppnames(res.data)
     })
   }, [refresh])

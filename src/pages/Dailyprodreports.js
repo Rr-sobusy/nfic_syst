@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Form from 'react-bootstrap/Form'
 import swal from 'sweetalert'
+import { Context } from 'src/App'
 
 function Dailyprodreports() {
   const [dailyreports, setDailyreports] = useState([])
@@ -23,16 +24,17 @@ function Dailyprodreports() {
     remarks: '',
   })
 
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/kqeA9XnmTgU1CUMnONapgDfHxpI51VBBy3USKsXrLO42UbwfKJMXRvxz6WeyQQ21tcBtywicaKXucH0jyVlNj236orKjp9Guu6yNfgGgUftG4i2dv4piPDKSMaiU1lLY',
-    ).then((res) => {
+    Axios.get(`${API}/api/warehouse/selectfg`).then((res) => {
       setFg(res.data)
     })
   }, [refresh])
   React.useEffect(() => {
     let subscribe = true
-    Axios.get('http://192.168.1.100:5006/proddailyrecords').then((response) => {
+    Axios.get(`${API}/api/dailyproduction`).then((response) => {
       if (subscribe) {
         setDailyreports(response.data)
       }
@@ -139,8 +141,9 @@ function Dailyprodreports() {
     }
   }
 
+  //Function in posting the production history
   function formSubmit() {
-    Axios.post('http://192.168.1.100:5006/insertdailyproduction', {
+    Axios.post(`${API}/api/dailyproductionEduIXd3z9WsA95Rki2jRV4ZsjYlnfUgvMKr6XeUNMnpeaUTPS`, {
       proddate: datas.date,
       prodname: datas.productname,
       packsize: datas.packsize,
@@ -153,6 +156,7 @@ function Dailyprodreports() {
     updateFg()
   }
 
+  //Function for updating the finished goods stocks
   function updateFg() {
     Axios.post('http://192.168.1.100:5006/updatefg', {
       rmmodal: datas.productname,

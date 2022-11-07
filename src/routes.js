@@ -1,6 +1,5 @@
 import React from 'react'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -54,7 +53,7 @@ const Delivery = React.lazy(() => import('./pages/Delivery.js'))
 const Cust = React.lazy(() => import('./pages/Manage_cust.js'))
 const Supps = React.lazy(() => import('./pages/Manage_suppliers.js'))
 const Sales = React.lazy(() => import('./pages/Salesstats.js'))
-const Rex = React.lazy(() => import('./pages/rex.js'))
+
 const Micros = React.lazy(() => import('./pages/Micros.js'))
 const Headers = React.lazy(() => import('./pages/pagecomonent/Header4navs.js'))
 const Dasboardcont = React.lazy(() => import('./pages/Dashboardcont.js'))
@@ -68,7 +67,6 @@ const Inbounding = React.lazy(() => import('./pages/Inbounding.js'))
 const Consumed = React.lazy(() => import('./pages/Consumed.js'))
 
 const routes = [
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
@@ -112,7 +110,7 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   {
-    path: '/macros/-yCSX09AFLXqMbKb220R3V8mXnOpamF0TTQHi7ICBWRJxiHdQTzqMiI4T',
+    path: '/macros1HhcQogFU9k5Obc8CqqDftt41X2MxXbodIOGgQ9PFrQwCnaoPBq0gdnJBh',
     name: 'Raw-Materials Section / Macros',
     element: Rawmat,
   },
@@ -122,27 +120,27 @@ const routes = [
     element: FG,
   },
   {
-    path: '/matdelivery/-7fhOgW6r2u0AAN6zYXPwNCGIIrzT5UqdM0sjfYCPNV7MTUrUmD7',
+    path: '/matdeliveryPkV2koC32AgvZtv5owj0ibUQlmIsruYFnTJN8QOFGv5TGYxlNYBXT',
     name: 'Material Delivery Reception',
     element: Delivery,
   },
   { path: '/managecustomers', name: 'Manage Customers', element: Cust },
   { path: '/managesuppliers', name: 'Manage Suppliers', element: Supps },
   { path: '/salesstats', name: 'Sales Statistics', element: Sales },
-  { path: '/rawmaterials', name: 'Sales Statistics', element: Rex },
+
   {
-    path: '/micros//-zCGGLbISDsmZttsQraX5YWhNxwUkhJTC5St7AUsatdvTaorj62XEjy5',
+    path: '/microsMtdlecpoZMVR4T21rVdvOP6kupHzFSBySGEhLAY0gqTZr7h6Qez6YbBgVZ',
     name: 'Raw-Materials Section / Micros',
     element: Micros,
   },
   { path: '/rmlist', name: 'Raw-Materials Section/Micros', element: Headers },
   {
-    path: '/dashboard/-ykkWxlgjPKyO1BTgZnJCmORSvoI7kjXAjkCTUcyke8DMo5AdIoX84',
-    name: 'dashboard',
+    path: '/dashboardzQJxXquQoempsWszESEZPwoYWlJpk5jPBlY3v6uE1UZJVhbjUHOD3FC',
+    name: 'Dashboard',
     element: Dasboardcont,
   },
   {
-    path: '/prodreports/-K7sXW6FzLkUOsW0KTKXUdsxIRzkdbtFVjSwAq679aZxdUzrlmrO',
+    path: '/prodreportsQRBpMUBXgugyW7qjiCslPWWzNUGkaB8AkxrtMx7BuFj8PtCgITM1I',
     name: 'Production Reports',
     element: Production_reps,
   },
@@ -162,7 +160,7 @@ const routes = [
 
   { path: '/inbounding', name: 'Inbouding', element: Inbounding },
   {
-    path: '/consumed-+/NitxoxUnBUAR94XYxibYW1TywyEL8S7n0gW92yPbbux9bd9I1OvJN',
+    path: '/consumedmaterialsAfyIQtSTKNl5pv3HByGumIfmcby1CSlrwGGmOsyZw6WRcLf',
     name: 'Consumed Materials',
     element: Consumed,
   },

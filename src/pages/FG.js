@@ -7,6 +7,7 @@ import { InputGroup } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import swal from 'sweetalert'
 import DataTable from 'react-data-table-component'
+import { Context } from 'src/App'
 
 function FG() {
   const [products, setProducts] = useState([])
@@ -19,9 +20,13 @@ function FG() {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
     async function getFgs() {
-      await Axios.get('http://192.168.1.100:8011/api/warehouse/selectfg').then((res) => {
+      await Axios.get(`${API}/api/warehouse/selectfg`).then((res) => {
         setProducts(res.data)
       })
     }
@@ -29,7 +34,7 @@ function FG() {
   }, [clicked])
 
   const handleInput = async () => {
-    await Axios.post('http://192.168.1.100:8011/api/insertfg', {
+    await Axios.post(`${API}/api/insertfg`, {
       pname: pname,
       psize: psize,
       quantity: iquantity,
@@ -107,7 +112,7 @@ function FG() {
                     }).then((value) => {
                       if (value == 'rex') {
                         Axios.post(
-                          'http://192.168.1.100:8011/api/deletefgEO23wMCs7ZR2MjXFkYZYUnXLLm8bNTXT6LTeAcwunZHG8HYQV1QXpwDr',
+                          `${API}/api/deletefgEO23wMCs7ZR2MjXFkYZYUnXLLm8bNTXT6LTeAcwunZHG8HYQV1QXpwDr`,
                           {
                             pname: row.Product_name,
                           },

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import swal from 'sweetalert'
+import { Context } from 'src/App'
 
 function Delivery() {
   const [deldata, setDeldata] = useState([])
@@ -33,31 +34,30 @@ function Delivery() {
   const handleClose2 = () => setShow2(false)
   const handleShow2 = () => setShow2(true)
 
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/N0eQ5sDwIIl7DbYRSYBJzOx6E3NcpwmiYRUokQq4hR9xgfqny0MhmxRnydS1jHtkWyEPdr8XABAeYEv5rB1Hq68yEavRPoAXVAE5LXi3Z5UK3nnS5QBxAR8cdjBQiMsU',
-    ).then((res) => {
+    Axios.get(`${API}/api/deliveryreceptions`).then((res) => {
       setDeldata(res.data)
     })
   }, [micros, packagings, suppnames, matdata])
 
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/Ubua80poBcH8AeMxqtUIlBYqE2S7n9CX8Thnbd9R70GmpPVZ69nrjvyDA5gJOvsS3c6KULorOqmA7hRJUa2dKNSa4v0XMiYF887Td8FlkSOHrHRLCAFEMxEJCUhjI8HI',
-    ).then((res) => {
+    Axios.get(`${API}/api/warehouse/selectMacros`).then((res) => {
       setMatdata(res.data)
       console.log(matdata)
     })
   }, [refresh])
+
   useEffect(() => {
-    Axios.get(
-      'http://192.168.1.100:5006/zj31D2dcD0apzqmc6obb1XtF1pJDD1X2uy4pTpoLYQ9HAHFr0cW6mXbIpOD4PJIk9qcMj50yv65qSr9hga6ZuBoEOkeE6oUvmtGWdNbKqkoNBasnDLu2JuuayLObR4mN',
-    ).then((res) => {
+    Axios.get(`${API}/api/suppliernames`).then((res) => {
       setSuppnames(res.data)
     })
   }, [refresh])
+
   useEffect(() => {
-    Axios.get('http://192.168.1.100:5006/searchmicros').then((res) => {
+    Axios.get(`${API}/api/warehouse/selectMicros`).then((res) => {
       setMicros(res.data)
     })
   }, [refresh])
@@ -65,7 +65,7 @@ function Delivery() {
   useEffect(() => {
     let mount = true
     if (mount) {
-      Axios.get('http://192.168.1.100:5006/getpackagings').then((res) => {
+      Axios.get(`${API}/api/warehouse/getpackaging`).then((res) => {
         setPackagings(res.data)
       })
     }

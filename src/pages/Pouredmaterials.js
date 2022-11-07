@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form'
 import Axios from 'axios'
 import DataTable from 'react-data-table-component'
 import swal from 'sweetalert'
-import { setRef } from '@mui/material'
+import { Context } from 'src/App'
 
 function Pouredmaterials() {
   const [show, setShow] = useState(false)
@@ -27,12 +27,13 @@ function Pouredmaterials() {
   const [micros, setMicros] = useState([])
   const [packaging, setPackaging] = useState([])
 
+  const sample = React.useContext(Context)
+  const API = sample.API_URi
+
   useEffect(() => {
-    async function get() {
+    function get() {
       let mount = true
-      await Axios.get(
-        'http://192.168.1.100:5006/Ubua80poBcH8AeMxqtUIlBYqE2S7n9CX8Thnbd9R70GmpPVZ69nrjvyDA5gJOvsS3c6KULorOqmA7hRJUa2dKNSa4v0XMiYF887Td8FlkSOHrHRLCAFEMxEJCUhjI8HI',
-      ).then((res) => {
+      Axios.get(`${API}/api/warehouse/selectMacros`).then((res) => {
         if (mount) {
           setMats(res.data)
           console.log('macros updated')
@@ -47,7 +48,7 @@ function Pouredmaterials() {
 
   React.useEffect(() => {
     let subscribe = true
-    Axios.get('http://192.168.1.100:5006/searchmicros').then((response) => {
+    Axios.get(`${API}/api/warehouse/selectMicros`).then((response) => {
       if (subscribe) {
         setMicros(response.data)
         console.log('updated')
@@ -61,7 +62,7 @@ function Pouredmaterials() {
 
   useEffect(() => {
     let subscribe = true
-    Axios.get('http://192.168.1.100:5006/pouring').then((res) => {
+    Axios.get(`${API}/api/getreleased`).then((res) => {
       if (subscribe) {
         setPoured(res.data)
         console.log('Pouring report updated')
@@ -75,9 +76,7 @@ function Pouredmaterials() {
 
   useEffect(() => {
     let subscribe = true
-    Axios.get(
-      'http://192.168.1.100:5006/kqeA9XnmTgU1CUMnONapgDfHxpI51VBBy3USKsXrLO42UbwfKJMXRvxz6WeyQQ21tcBtywicaKXucH0jyVlNj236orKjp9Guu6yNfgGgUftG4i2dv4piPDKSMaiU1lLY',
-    ).then((res) => {
+    Axios.get(`${API}/api/warehouse/selectfg`).then((res) => {
       if (subscribe) {
         setRepro(res.data)
       }
@@ -89,7 +88,7 @@ function Pouredmaterials() {
 
   useEffect(() => {
     let subscribe = true
-    Axios.get('http://192.168.1.100:8011/api/warehouse/getpackaging').then((res) => {
+    Axios.get(`${API}/api/warehouse/getpackaging`).then((res) => {
       if (subscribe) {
         setPackaging(res.data)
       }
@@ -111,7 +110,6 @@ function Pouredmaterials() {
     return newval.packaging_name === type2
   })
 
-  const Navigate = useNavigate()
   const customStyles = {
     rows: {
       style: {
@@ -135,35 +133,13 @@ function Pouredmaterials() {
   }
   //function in inserting and updating the table
   function addPoured() {
-    Axios.post('http://192.168.1.100:5006/insertpouring', {
+    Axios.post(`${API}/api/postreleasedV83E79oow9SWNr1z00bLyrJrH4lbqeZfMdYfKfDJGEE7xHc0AXcx`, {
       date: datas.date,
       matname: type2,
       quantity: parseFloat(datas.quantity, 10),
     }).then((rex) => {
       setRefresh(!refresh)
     })
-  }
-  //function in add Pending Macro by releasing Macro from warehouse
-  async function addPendingMacro() {
-    await Axios.post(
-      'http://192.168.1.100:8011/api/addpendingmacroaEe3eC2ux71OuUnMNuCxwMExURmAOtWIufmV1r2HI48yRzRJk',
-      {
-        macroName: type2,
-        quantity: parseInt(filteredmacro.bin_content, 10) + parseInt(datas.quantity, 10),
-      },
-    ).then((res) => {
-      setRefresh(!refresh)
-    })
-  }
-
-  async function addPendingRepro() {
-    await Axios.post(
-      'http://192.168.1.100:8011/api/addpendingreproAhnNrt2ohV1lHyXRahxsQFAzmmz2jGT7tl3nIlSmwgKsaYF1S',
-      {
-        productName: type2,
-        quantity: parseFloat(filteredrepro.bin_content, 10) + parseFloat(datas.quantity, 10),
-      },
-    )
   }
 
   //function that update the Macro,Micro,Packaging,Repro in Repros after Released
@@ -175,7 +151,7 @@ function Pouredmaterials() {
         const difference =
           parseFloat(filteredmicro.current_stocks, 10) - parseFloat(datas.quantity, 10)
         await Axios.post(
-          'http://192.168.1.100:8011/api/subtractmicrox0RUyYYgH4ReJaNCyCyz9Ie5p2sTvT45Ho1hMV5ML0A2lLeJ58J',
+          `${API}/api/updatemicro8LxDikqWnk27dI06KR2IKUIuoDIayBGe5jRug3wf8QBuHT9Uegq4b`,
           {
             microName: type2,
             difference: difference,
@@ -184,7 +160,7 @@ function Pouredmaterials() {
           //Function in adding pending materials after releasing from warehouse
           const difference = parseFloat(filteredmicro.pending, 10) + parseFloat(datas.quantity, 10)
           await Axios.post(
-            'http://192.168.1.100:8011/api/addpendingmicrofP5uesr2FS7OEATkqbsmajDQjWBewQTrlWcjP4Mi3nqfDyeY3',
+            `${API}/api/addpendingmicrofP5uesr2FS7OEATkqbsmajDQjWBewQTrlWcjP4Mi3nqfDyeY3`,
             {
               microName: type2,
               quantitymicro: difference,
@@ -204,13 +180,16 @@ function Pouredmaterials() {
       } else {
         const difference = parseInt(filteredmacro.current_stocks, 10) - parseInt(datas.quantity, 10)
 
-        await Axios.post('http://192.168.1.100:5006/updatemacropouring', {
-          macroname: type2,
-          difference: difference,
-        }).then(async (rex) => {
+        await Axios.post(
+          `${API}/api/updatemacrowaqQD0JumKPyyyHrJ0HjUWby9LSK82jRM8DM5f7Y6nYrHQ4rWFpVd`,
+          {
+            macroName: type2,
+            difference: difference,
+          },
+        ).then(async (rex) => {
           //Function that add pending Macros after release from warehouse
           await Axios.post(
-            'http://192.168.1.100:8011/api/addpendingmacroaEe3eC2ux71OuUnMNuCxwMExURmAOtWIufmV1r2HI48yRzRJk',
+            `${API}/api/addpendingmacroaEe3eC2ux71OuUnMNuCxwMExURmAOtWIufmV1r2HI48yRzRJk`,
             {
               macroName: type2,
               quantity: parseInt(filteredmacro.bin_content, 10) + parseInt(datas.quantity, 10),
@@ -230,14 +209,14 @@ function Pouredmaterials() {
       } else {
         const difference = parseInt(filteredrepro.repros, 10) - parseInt(datas.quantity, 10)
         await Axios.post(
-          'http://192.168.1.100:8011/api/updaterepro7xKKroOjuSJrQpay8JHEHgEAFGvenEZh5EH6OsksfRVgxVS6BD3Hf',
+          `${API}/api/updaterepro7xKKroOjuSJrQpay8JHEHgEAFGvenEZh5EH6OsksfRVgxVS6BD3Hf`,
           {
             productName: type2,
             difference: difference,
           },
         ).then(async () => {
           await Axios.post(
-            'http://192.168.1.100:8011/api/addrepropendingh3JuRHomzUrF4MQ1oWUkXBGGxK0JwmC4QZCkBxEq98qGOetiQ',
+            `${API}/api/addrepropendingh3JuRHomzUrF4MQ1oWUkXBGGxK0JwmC4QZCkBxEq98qGOetiQ`,
             {
               reproName: type2,
               quantity: parseInt(filteredrepro.bin_content, 10) + parseInt(datas.quantity, 10),
@@ -258,7 +237,7 @@ function Pouredmaterials() {
         const newquantity =
           parseInt(filteredpackaging.current_stocks, 10) - parseInt(datas.quantity, 10)
         await Axios.post(
-          'http://192.168.1.100:8011/api/subtractpackagingweaAI0yvEnn7rCLTIfqLRICqgfjNRd0D6vmquTbxsC9JN06',
+          `${API}/api/updatepackagingU17WhExYZEmR8ZitzKD5sdrT6MTZIyMaKmldVs19t0zkBTfb0`,
           {
             packagingName: type2,
             quantity: newquantity,
@@ -287,7 +266,6 @@ function Pouredmaterials() {
     },
   ]
 
-  function handleExport() {}
   return (
     <div>
       <div align="right">

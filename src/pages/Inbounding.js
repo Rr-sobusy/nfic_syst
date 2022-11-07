@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Axios from 'axios'
-import { faRefresh } from '@fortawesome/free-solid-svg-icons'
+import { Context } from 'src/App'
 
 function Inbounding() {
   const [suppliers, setSuppliers] = useState([])
@@ -15,6 +15,9 @@ function Inbounding() {
   const [datas, setDatas] = useState({ suppName: '', itemName: '', quantity: '', po_number: '' })
   const [inbounds, setInbounds] = useState([])
   const [refresh, setRefresh] = useState(false)
+
+  const sample = React.useContext(Context)
+  const API = sample.laravelAPI
 
   useEffect(() => {
     let mount = true
